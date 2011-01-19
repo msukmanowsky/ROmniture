@@ -1,0 +1,5 @@
+config.yml
+.DS_STORE
+doc
+*.gem
+Gemfile.lock
