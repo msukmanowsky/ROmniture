@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name              = "ROmniture"
+  s.name              = "romniture"
   s.version           = "0.0.1"
   s.platform          = Gem::Platform::RUBY
   s.authors           = ["Mike Sukmanowski"]
