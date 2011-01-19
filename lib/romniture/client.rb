@@ -6,10 +6,6 @@ require 'digest/sha1'
 require 'base64'
 require 'json'
 
-# rest url = https://api2.omniture.com/admin/1.2/rest/?method=<METHOD>
-# https://api2.omniture.com/admin/1.2/rest/?method=Company.GetReportSuites
-# X-WSSE: UsernameToken Username="", PasswordDigest="VUgupGaUQnVJdN3DRIglwFpE97A=", Nonce="ZjFmNzhiZDE3YzcxY2M3Y2I2NzgzYmRj", Created="2011-01-18T20:54:47Z"
-
 module ROmniture
   
   class Client
