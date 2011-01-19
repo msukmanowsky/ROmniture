@@ -7,7 +7,12 @@ Gem::Specification.new do |s|
   s.homepage          = "http://github.com/msukmanowsky/ROmniture"
   s.summary           = "Use Omniture's REST API with ease."
   s.description       = "A library that allows access to Omniture's REST API libraries (developer.omniture.com)"
+  s.has_rdoc          = false
   s.rubyforge_project = s.name
+  s.require_path      = 'lib'
+  s.files             = `git ls-files`.split("\n")
+  s.add_dependency("httpi")
+  s.add_dependency("json")
   
   #s.required_rubygems_version = "&gt;= 1.3.6"
  
@@ -22,8 +27,5 @@ Gem::Specification.new do |s|
   # s.executables   = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
   # s.extensions    = `git ls-files ext/extconf.rb`.split("\n")
  
-  s.require_path = 'lib'
- 
-  # For C extensions
-  # s.extensions = "ext/extconf.rb"
+
 end
