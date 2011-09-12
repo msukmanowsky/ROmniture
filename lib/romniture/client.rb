@@ -1,59 +1,86 @@
-require 'rubygems'
-
-require 'httpi'
-require 'digest/md5'
-require 'digest/sha1'
-require 'base64'
-require 'json'
-
 module ROmniture
   
   class Client
+
+    DEFAULT_REPORT_WAIT_TIME = 5
     
-    BASE_URI = 'https://api2.omniture.com/admin/1.2/rest/'
+    ENVIRONMENTS = {
+      :san_jose       => "https://api.omniture.com/admin/1.2/rest/",
+      :dallas         => "https://api2.omniture.com/admin/1.2/rest/",
+      :london         => "https://api3.omniture.com/admin/1.2/rest/",
+      :san_jose_beta  => "https://beta-api.omniture.com/admin/1.2/rest/",
+      :dallas_beta    => "https://beta-api2.omniture.com/admin/1.2/rest/",
+      :sandbox        => "https://api-sbx1.omniture.com/admin/1.2/rest/"
+    }    
     
     def initialize(options={})
       @username       = options[:username]
       @shared_secret  = options[:shared_secret]
+      @base_uri       = options[:environment].is_a?(Symbol) ? ENVIRONMENTS[options[:environment]] : options[:environment].to_s
+      HTTPI.log       = false
+    end
+        
+    def request(method, parameters = {})
+      response = send_request(method, parameters)
       
-      HTTPI.log = false
+      JSON.parse(response.body)
     end
     
-    def invoke_simple(method)
-      response = send_request(method, {})
-      
-      JSON.parse response.body
-    end
-    
-    def invoke_report(method, report_description)      
+    def get_report(method, report_description)      
       response = send_request(method, report_description)
       
-      if response.code == 200
-        json = JSON.parse response.body
-        if json["status"] == "queued"
-          puts "Report with ID (" + json["reportID"].to_s + ") queued.  Now fetching report..."
-          return get_queued_report json["reportID"]
-        else
-          # Not queued error
-        end
+      json = JSON.parse response.body
+      if json["status"] == "queued"
+        log(Logger::INFO, "Report with ID (" + json["reportID"].to_s + ") queued.  Now fetching report...")
+        return get_queued_report json["reportID"]
       else
-        # Couldn't even do a request
+        log(Logger::ERROR, "Could not queue report.  Omniture returned with error:\n#{response.body}")
+        raise "Could not queue report.  Omniture returned with error:\n#{response.body}"
       end
-      
-      
     end
     
+    attr_writer :log
+    
+    def log?
+      @log != false
+    end
+    
+    def logger
+      @logger ||= ::Logger.new(STDOUT)
+    end
+    
+    def log_level
+      @log_level ||= ::Logger::INFO
+    end
+    
+    def log(*args)
+      level = args.first.is_a?(Numeric) || args.first.is_a?(Symbol) ? args.shift : log_level
+      logger.log(level, args.join(" ")) if log?
+    end
+        
     private
     
     def send_request(method, data)
+      log(Logger::INFO, "Requesting #{method}...")
       generate_nonce
       
+      log(Logger::INFO, "Created new nonce: #{@password}")
+      
       request = HTTPI::Request.new
-      request.url = BASE_URI + "?method=#{method}"
+      request.url = @base_uri + "?method=#{method}"
       request.headers = request_headers
       request.body = data.to_json
 
-      HTTPI.post request
+      response = HTTPI.post(request)
+      
+      if response.code >= 400
+        log(:error, "Request failed and returned with response code: #{response.code}\n\n#{response.body}")
+        raise "Request failed and returned with response code: #{response.code}\n\n#{response.body}" 
+      end
+      
+      log(Logger::INFO, "Server responded with response code #{response.code}.")
+      
+      response
     end
     
     def generate_nonce
@@ -73,33 +100,37 @@ module ROmniture
     def get_queued_report(report_id)
       done = false
       error = false
+      status = nil
+      start_time = Time.now
+      end_time = nil
 
       begin
-        sleep 5
-        
         response = send_request("Report.GetStatus", {"reportID" => "#{report_id}"})
-        #puts "Checking on report #{report_id} status..."
+        log(Logger::INFO, "Checking on status of report #{report_id}...")
         
-        if response.code == 200
-          json = JSON.parse response.body
-          #puts "Report #{report_id}'s status is: " + json["status"].to_s
-          if json["status"] == "done"
-            done = true
-          elsif json["status"] == "failed"
-            error = true
-          end
-        else
+        json = JSON.parse(response.body)
+        status = json["status"]
+        
+        if status == "done"
           done = true
+        elsif status == "failed"
           error = true
         end
+        
+        sleep DEFAULT_REPORT_WAIT_TIME if !done && !error
       end while !done && !error
       
       if error
-        raise 'An error has occured'
+        log(:error, "Unable to get data for report #{report_id}.  Omniture returned a status of #{status}.")
+        raise "Unable to get data for report #{report_id}.  Omniture returned a status of #{status}."
       end
-      
+            
       response = send_request("Report.GetReport", {"reportID" => "#{report_id}"})
-      JSON.parse response.body
+
+      end_time = Time.now
+      log(Logger::INFO, "Report with ID #{report_id} has finished processing in #{((end_time - start_time)*1000).to_i} ms")
+      
+      JSON.parse(response.body)
     end
   end
 

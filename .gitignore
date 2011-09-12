@@ -1,5 +1,6 @@
-config.yml
-.DS_STORE
-doc
+test/config.yml
 *.gem
+.bundle
 Gemfile.lock
+pkg/*
+.DS_STORE
