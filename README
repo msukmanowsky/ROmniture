@@ -1,10 +1,9 @@
 TODO: Write an actual read me file...for now check out the stuff in test
 
-Probably a good idea also to create a config.yml file off the root with this structure:
+To run unit tests properly, add a config.yml in /test with this structure:
 
 omniture:
   username:
   shared_secret:
   report_suite_id:
-
-To allow you to run unit tests properly.
+  environment:
