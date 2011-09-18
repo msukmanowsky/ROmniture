@@ -13,7 +13,8 @@ class ClientTest < Test::Unit::TestCase
     @client = ROmniture::Client.new({
       :username => "#{@config["username"]}",
       :shared_secret => "#{@config["shared_secret"]}",
-      :environment => "#{@config["environment"]}"
+      :environment => "#{@config["environment"]}",
+      :wait_time => @config["wait_time"]
     })
   end
   

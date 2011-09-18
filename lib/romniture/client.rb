@@ -16,7 +16,9 @@ module ROmniture
     def initialize(options={})
       @username       = options[:username]
       @shared_secret  = options[:shared_secret]
-      @base_uri       = options[:environment].is_a?(Symbol) ? ENVIRONMENTS[options[:environment]] : options[:environment].to_s
+      @environment    = options[:environment].is_a?(Symbol) ? ENVIRONMENTS[options[:environment]] : options[:environment].to_s
+      @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
+      @log            = options[:log] ? options[:log] : false
       HTTPI.log       = false
     end
         
@@ -67,7 +69,7 @@ module ROmniture
       log(Logger::INFO, "Created new nonce: #{@password}")
       
       request = HTTPI::Request.new
-      request.url = @base_uri + "?method=#{method}"
+      request.url = @environment + "?method=#{method}"
       request.headers = request_headers
       request.body = data.to_json
 
@@ -117,7 +119,7 @@ module ROmniture
           error = true
         end
         
-        sleep DEFAULT_REPORT_WAIT_TIME if !done && !error
+        sleep @wait_time if !done && !error
       end while !done && !error
       
       if error
