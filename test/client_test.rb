@@ -10,12 +10,12 @@ class ClientTest < Test::Unit::TestCase
     config = YAML::load(File.open("test/config.yml"))
     @config = config["omniture"]
     
-    @client = ROmniture::Client.new({
-      :username => "#{@config["username"]}",
-      :shared_secret => "#{@config["shared_secret"]}",
-      :environment => "#{@config["environment"]}",
+    @client = ROmniture::Client.new(
+      @config["username"],
+      @config["shared_secret"],
+      @config["environment"],
       :wait_time => @config["wait_time"]
-    })
+    )
   end
   
   def test_simple_request

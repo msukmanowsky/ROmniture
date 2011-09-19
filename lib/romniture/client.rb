@@ -13,10 +13,11 @@ module ROmniture
       :sandbox        => "https://api-sbx1.omniture.com/admin/1.2/rest/"
     }    
     
-    def initialize(options={})
-      @username       = options[:username]
-      @shared_secret  = options[:shared_secret]
-      @environment    = options[:environment].is_a?(Symbol) ? ENVIRONMENTS[options[:environment]] : options[:environment].to_s
+    def initialize(username, shared_secret, environment, options={})
+      @username       = username
+      @shared_secret  = shared_secret
+      @environment    = environment.is_a?(Symbol) ? ENVIRONMENTS[environment] : environment.to_s
+
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
       HTTPI.log       = false
