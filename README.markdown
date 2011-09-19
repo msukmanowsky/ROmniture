@@ -10,13 +10,16 @@ Omniture's API is closed, you have to be a paying customer in order to access th
     [sudo] gem install romniture
 
 ## initialization and authentication
-romniture requires you supply the `username`, `shared_secret` and `environment` which you can access within the Company > Web Services section of the Admin Console.  The environment you'll use to connect to Omniture's API depends on which datacenter they're using to store your traffic data and will be one of:
- * San Jose (https://api.omniture.com/admin/1.2/rest/)
- * Dallas (https://api2.omniture.com/admin/1.2/rest/)
- * London (https://api3.omniture.com/admin/1.2/rest/)
- * San Jose Beta (https://beta-api.omniture.com/admin/1.2/rest/)
- * Dallas (beta) (https://beta-api2.omniture.com/admin/1.2/rest/)
- * Sandbox (https://api-sbx1.omniture.com/admin/1.2/rest/)
+romniture requires you supply the `username`, `shared_secret` and `environment` which you can access within the Company > Web Services section of the Admin Console.  The environment you'll use to connect to Omniture's API depends on which data center they're using to store your traffic data and will be one of:
+
+* San Jose (https://api.omniture.com/admin/1.2/rest/)
+* Dallas (https://api2.omniture.com/admin/1.2/rest/)
+* London (https://api3.omniture.com/admin/1.2/rest/)
+* San Jose Beta (https://beta-api.omniture.com/admin/1.2/rest/)
+* Dallas (beta) (https://beta-api2.omniture.com/admin/1.2/rest/)
+* Sandbox (https://api-sbx1.omniture.com/admin/1.2/rest/)
+
+Here's an example of initializing with a few configuration options.
 
     client = ROmniture::Client.new(
       username, 
@@ -29,8 +32,9 @@ romniture requires you supply the `username`, `shared_secret` and `environment` 
     
 ## usage
 There are only two core methods for the client which doesn't try to "over architect a spaghetti API":
- * `get_report` - used to...while get reports and
- * `request` - more generic used to make any kind of request
+
+* `get_report` - used to...while get reports and
+* `request` - more generic used to make any kind of request
 
 For reference, I'd recommend keeping [Omniture's Developer Portal](http://developer.omniture.com) open as you code .  It's not the easiest to navigate but most of what you need is there.
 
