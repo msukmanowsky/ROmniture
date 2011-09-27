@@ -126,7 +126,7 @@ module ROmniture
       if error
         msg = "Unable to get data for report #{report_id}.  Status: #{status}.  Error Code: #{json["error_code"]}.  #{json["error_msg"]}."
         log(:error, msg)
-        raise ROmniture::Exceptions::OmnitureReportException msg
+        raise ROmniture::Exceptions::OmnitureReportException.new(json), msg
       end
             
       response = send_request("Report.GetReport", {"reportID" => "#{report_id}"})

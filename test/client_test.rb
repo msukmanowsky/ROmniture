@@ -41,7 +41,7 @@ class ClientTest < Test::Unit::TestCase
   
   def test_a_bad_request
     # Bad request, mixing commerce and traffic variables
-    #assert_raise(ROmniture::Exceptions::OmnitureReportException)do
+    assert_raise(ROmniture::Exceptions::OmnitureReportException) do
       response = @client.get_report("Report.QueueTrended", {
         "reportDescription" => {
           "reportSuiteID" => @config["report_suite_id"],
@@ -51,7 +51,7 @@ class ClientTest < Test::Unit::TestCase
           "elements" => [{"id" => "siteSection"}]
         }
       })
-    #end
+    end
   end
   
 end
