@@ -2,7 +2,7 @@ module ROmniture
   
   class Client
 
-    DEFAULT_REPORT_WAIT_TIME = 5
+    DEFAULT_REPORT_WAIT_TIME = 0.5
     
     ENVIRONMENTS = {
       :san_jose       => "https://api.omniture.com/admin/1.2/rest/",
