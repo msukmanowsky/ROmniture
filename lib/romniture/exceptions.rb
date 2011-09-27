@@ -1,5 +1,13 @@
 module ROmniture
   module Exceptions
-    class OmnitureReportException < Exception; end
+    
+    class OmnitureReportException < StandardError
+      attr_reader :data
+      def initialize(data)
+        @data = data
+        super
+      end
+    end
+    
   end
 end

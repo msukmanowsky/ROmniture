@@ -137,5 +137,4 @@ module ROmniture
       JSON.parse(response.body)
     end
   end
-
 end

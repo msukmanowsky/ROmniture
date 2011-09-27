@@ -1,5 +1,6 @@
 require "romniture/version"
 require "romniture/client"
+require "romniture/exceptions"
 
 require "rubygems"
 
