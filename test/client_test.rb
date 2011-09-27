@@ -39,4 +39,19 @@ class ClientTest < Test::Unit::TestCase
     assert(response["report"].has_key?("data"), "Returned hash has no data!")
   end
   
+  def test_a_bad_request
+    # Bad request, mixing commerce and traffic variables
+    #assert_raise(ROmniture::Exceptions::OmnitureReportException)do
+      response = @client.get_report("Report.QueueTrended", {
+        "reportDescription" => {
+          "reportSuiteID" => @config["report_suite_id"],
+          "dateFrom" => "2011-01-01",
+          "dateTo" => "2011-01-11",
+          "metrics" => [{"id" => "pageviews"}, {"id" => "event11"}],
+          "elements" => [{"id" => "siteSection"}]
+        }
+      })
+    #end
+  end
+  
 end

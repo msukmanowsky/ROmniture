@@ -124,8 +124,9 @@ module ROmniture
       end while !done && !error
       
       if error
-        log(:error, "Unable to get data for report #{report_id}.  Omniture returned a status of #{status}.")
-        raise "Unable to get data for report #{report_id}.  Omniture returned a status of #{status}."
+        msg = "Unable to get data for report #{report_id}.  Status: #{status}.  Error Code: #{json["error_code"]}.  #{json["error_msg"]}."
+        log(:error, msg)
+        raise ROmniture::Exceptions::OmnitureReportException msg
       end
             
       response = send_request("Report.GetReport", {"reportID" => "#{report_id}"})
