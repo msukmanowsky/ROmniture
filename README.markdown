@@ -25,7 +25,7 @@ Here's an example of initializing with a few configuration options.
       username, 
       shared_secret, 
       :san_jose, 
-			:verify_mode	=> nil	# Optionaly change the ssl verify mode.
+      :verify_mode	=> nil	# Optionaly change the ssl verify mode.
       :log => false,    		# Optionally turn off logging if it ticks you off
       :wait_time => 1   		# Amount of seconds to wait in between pinging 
                         		# Omniture's servers to see if a report is done processing (BEWARE OF TOKENS!)
