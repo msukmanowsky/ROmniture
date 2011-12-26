@@ -20,6 +20,7 @@ module ROmniture
 
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
+      @use_ssl        = options[:user_ssl] ? options[:use_ssl] : false
       HTTPI.log       = false
     end
         
@@ -70,6 +71,9 @@ module ROmniture
       log(Logger::INFO, "Created new nonce: #{@password}")
       
       request = HTTPI::Request.new
+
+      request.use_ssl = @use_ssl
+
       request.url = @environment + "?method=#{method}"
       request.headers = request_headers
       request.body = data.to_json
