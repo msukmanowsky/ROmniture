@@ -20,7 +20,7 @@ module ROmniture
 
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
-      @use_ssl        = options[:user_ssl] ? options[:use_ssl] : false
+      @verify_mode        = options[:verify_mode] ? options[:verify_mode] : false
       HTTPI.log       = false
     end
         
@@ -72,7 +72,9 @@ module ROmniture
       
       request = HTTPI::Request.new
 
-      request.use_ssl = @use_ssl
+      if @verify_mode
+        request.auth.ssl.verify_mode = @verify_mode
+      end
 
       request.url = @environment + "?method=#{method}"
       request.headers = request_headers
