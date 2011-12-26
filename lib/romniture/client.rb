@@ -20,7 +20,7 @@ module ROmniture
 
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
-      @verify_mode        = options[:verify_mode] ? options[:verify_mode] : false
+      @verify_mode    = options[:verify_mode] ? options[:verify_mode] : false
       HTTPI.log       = false
     end
         
