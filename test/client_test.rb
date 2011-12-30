@@ -14,6 +14,7 @@ class ClientTest < Test::Unit::TestCase
       @config["username"],
       @config["shared_secret"],
       @config["environment"],
+      :verify_mode => @config['verify_mode'],
       :wait_time => @config["wait_time"]
     )
   end

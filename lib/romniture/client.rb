@@ -20,6 +20,7 @@ module ROmniture
 
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
+      @verify_mode    = options[:verify_mode] ? options[:verify_mode] : false
       HTTPI.log       = false
     end
         
@@ -70,6 +71,11 @@ module ROmniture
       log(Logger::INFO, "Created new nonce: #{@password}")
       
       request = HTTPI::Request.new
+
+      if @verify_mode
+        request.auth.ssl.verify_mode = @verify_mode
+      end
+
       request.url = @environment + "?method=#{method}"
       request.headers = request_headers
       request.body = data.to_json
