@@ -1,3 +1,4 @@
+require "rubygems"
 require "bundler/gem_tasks"
 
 desc "Run all tests in /test"
