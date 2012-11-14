@@ -26,8 +26,15 @@ module ROmniture
         
     def request(method, parameters = {})
       response = send_request(method, parameters)
-      
-      JSON.parse(response.body)
+
+      begin
+        JSON.parse(response.body)
+      rescue JSON::ParserError => pe
+        response.body
+      rescue Exception => e
+        log(Logger::ERROR, "Error in request response:\n#{response.body}")
+        raise "Error in request response:\n#{response.body}"
+      end
     end
     
     def get_report(method, report_description)      
