@@ -12,12 +12,12 @@ Omniture's API is closed, you have to be a paying customer in order to access th
 ## initialization and authentication
 romniture requires you supply the `username`, `shared_secret` and `environment` which you can access within the Company > Web Services section of the Admin Console.  The environment you'll use to connect to Omniture's API depends on which data center they're using to store your traffic data and will be one of:
 
-* San Jose (https://api.omniture.com/admin/1.2/rest/)
-* Dallas (https://api2.omniture.com/admin/1.2/rest/)
-* London (https://api3.omniture.com/admin/1.2/rest/)
-* San Jose Beta (https://beta-api.omniture.com/admin/1.2/rest/)
-* Dallas (beta) (https://beta-api2.omniture.com/admin/1.2/rest/)
-* Sandbox (https://api-sbx1.omniture.com/admin/1.2/rest/)
+* San Jose (https://api.omniture.com/admin/1.3/rest/)
+* Dallas (https://api2.omniture.com/admin/1.3/rest/)
+* London (https://api3.omniture.com/admin/1.3/rest/)
+* San Jose Beta (https://beta-api.omniture.com/admin/1.3/rest/)
+* Dallas (beta) (https://beta-api2.omniture.com/admin/1.3/rest/)
+* Sandbox (https://api-sbx1.omniture.com/admin/1.3/rest/)
 
 Here's an example of initializing with a few configuration options.
 
