@@ -5,12 +5,12 @@ module ROmniture
     DEFAULT_REPORT_WAIT_TIME = 0.25
     
     ENVIRONMENTS = {
-      :san_jose       => "https://api.omniture.com/admin/1.2/rest/",
-      :dallas         => "https://api2.omniture.com/admin/1.2/rest/",
-      :london         => "https://api3.omniture.com/admin/1.2/rest/",
-      :san_jose_beta  => "https://beta-api.omniture.com/admin/1.2/rest/",
-      :dallas_beta    => "https://beta-api2.omniture.com/admin/1.2/rest/",
-      :sandbox        => "https://api-sbx1.omniture.com/admin/1.2/rest/"
+      :san_jose       => "https://api.omniture.com/admin/1.3/rest/",
+      :dallas         => "https://api2.omniture.com/admin/1.3/rest/",
+      :london         => "https://api3.omniture.com/admin/1.3/rest/",
+      :san_jose_beta  => "https://beta-api.omniture.com/admin/1.3/rest/",
+      :dallas_beta    => "https://beta-api2.omniture.com/admin/1.3/rest/",
+      :sandbox        => "https://api-sbx1.omniture.com/admin/1.3/rest/"
     }    
     
     def initialize(username, shared_secret, environment, options={})
