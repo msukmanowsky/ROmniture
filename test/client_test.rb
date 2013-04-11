@@ -42,14 +42,14 @@ class ClientTest < Test::Unit::TestCase
   end
 
   def test_a_bad_request
-    # Bad request, mixing commerce and traffic variables
+    # Bad request, with an invalid metric name
     assert_raise(ROmniture::Exceptions::OmnitureReportException) do
       response = @client.get_report("Report.QueueTrended", {
         "reportDescription" => {
           "reportSuiteID" => @config["report_suite_id"],
           "dateFrom" => "2011-01-01",
           "dateTo" => "2011-01-11",
-          "metrics" => [{"id" => "pageviews"}, {"id" => "event11"}],
+          "metrics" => [{"id" => "pageviews"}, {"id" => "badName"}],
           "elements" => [{"id" => "siteSection"}]
         }
       })
