@@ -68,8 +68,50 @@ module ROmniture
       level = args.first.is_a?(Numeric) || args.first.is_a?(Symbol) ? args.shift : log_level
       logger.log(level, args.join(" ")) if log?
     end
+
+    # For Trended or Overtime reports, the response from Omniture's API is often deeply nested and difficult to traverse.
+    # This function basically denormalizes/flattens the hierarchical structure into a simple array of hashes.
+    # So for example, if the top level element is browser, and the second level is page, and the third level is datetime, 
+    #   this function produces an array of hashes that each have a "browser", "page", and "datetime" keys along with a 
+    #   key for each metric.
+    def flatten_response(resp)
+      @flattened = []
+      report = resp["report"]
+      elements = report["elements"].map{|e| e["id"]}
+      metrics = report["metrics"].map{|e| e["id"]}
+
+      #For some reason OMTR doesn't list the datetime in the elements list if it is the top-level element, so add it in.
+      datetime_index = elements.index{|e| e == "datetime"}
+      elements.unshift("datetime") if datetime_index.nil?
+      
+      flatten_report(report['data'], elements, metrics) 
+      @flattened
+    end
         
     private
+    def flatten_report( data, elements, metrics, current_level = 1, result_row = nil)
+      data.each do |current_node|
+        if current_level == 1 then result_row = Hash.new else result_row = result_row.clone end
+       
+        #Get the element at this level and store it in our result row, so this will end up with something like
+        # { "browser" => "Google Chrome 25.0" } or { "datetime" => "Fri. 1 Mar. 2013" }
+        element_name = elements[current_level-1]
+        result_row[element_name] = current_node["name"]
+
+        #If there are still more breakdown levels to work our way down, continue recursively working down them.
+        #If not, then we are at the bottom level, so take our result row and save it in the @flattened array.
+        if current_node.has_key?("breakdown")
+          flatten_report( current_node["breakdown"], elements, metrics, current_level + 1, result_row)
+        else
+          metrics.each_with_index { |metric, i| result_row[metric] = current_node['counts'][i].to_i }
+          @flattened <<  result_row
+        end
+
+      end
+    end
+
+
+
     
     def send_request(method, data)
       log(Logger::INFO, "Requesting #{method}...")
