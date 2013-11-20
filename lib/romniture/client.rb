@@ -21,7 +21,7 @@ module ROmniture
       @wait_time      = options[:wait_time] ? options[:wait_time] : DEFAULT_REPORT_WAIT_TIME
       @log            = options[:log] ? options[:log] : false
       @verify_mode    = options[:verify_mode] ? options[:verify_mode] : false
-      HTTPI.log       = false
+      HTTPI.log       = true
     end
         
     def request(method, parameters = {})
@@ -151,7 +151,8 @@ module ROmniture
 
     def request_headers 
       {
-        "X-WSSE" => "UsernameToken Username=\"#{@username}\", PasswordDigest=\"#{@password}\", Nonce=\"#{@nonce}\", Created=\"#{@created}\""
+        "X-WSSE" => "UsernameToken Username=\"#{@username}\", PasswordDigest=\"#{@password}\", Nonce=\"#{@nonce}\", Created=\"#{@created}\"",
+        'Content-Type' => 'application/json'   #Added by ROB on 2013-08-22 because the Adobe Social API seems to require this be set
       }
     end
     
