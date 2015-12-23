@@ -22,15 +22,15 @@ romniture requires you supply the `username`, `shared_secret` and `environment` 
 Here's an example of initializing with a few configuration options.
 
     client = ROmniture::Client.new(
-      username, 
-      shared_secret, 
-      :san_jose, 
+      username,
+      shared_secret,
+      :san_jose,
       :verify_mode	=> nil	# Optionaly change the ssl verify mode.
       :log => false,    		# Optionally turn off logging if it ticks you off
-      :wait_time => 1   		# Amount of seconds to wait in between pinging 
+      :wait_time => 1   		# Amount of seconds to wait in between pinging
                         		# Omniture's servers to see if a report is done processing (BEWARE OF TOKENS!)
       )
-    
+
 ## usage
 There are only two core methods for the client which doesn't try to "over architect a spaghetti API":
 
@@ -44,7 +44,7 @@ The response returned by either of these requests Ruby (parsed JSON).
 ## examples
     # Find all the company report suites
     client.request('Company.GetReportSuites')
-    
+
     # Get an overtime report
     client.get_report "Report.QueueOvertime", {
       "reportDescription" => {
@@ -57,3 +57,20 @@ The response returned by either of these requests Ruby (parsed JSON).
 
 ## see also
 My other client library [comscore_ruby](https://github.com/msukmanowsky/comscore_ruby) for those of you looking to pull data from comscore as well.
+
+## contributing
+
+### running the tests
+
+Create `test/config.yml` with your omniture details. Git will ignore it. Example:
+
+```
+omniture:
+  username: my username
+  shared_secret: very_secret
+  report_suite_id: suiteid
+  environment: :san_jose
+  wait_time: 1
+```
+
+Run the tests with `rake test`.
